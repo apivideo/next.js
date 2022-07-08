@@ -22,9 +22,7 @@ npx create-next-app --example with-apivideo-upload with-apivideo-upload-app
 
 ```bash
 yarn create next-app --example with-apivideo-upload with-apivideo-upload-app
-```
-
-```bash
+# or
 pnpm create next-app --example with-apivideo-upload with-apivideo-upload-app
 ```
 
