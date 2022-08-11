@@ -1,33 +1,17 @@
 import Video from '@api.video/nodejs-client/lib/model/Video'
-import { PlayerSdk, PlayerTheme } from '@api.video/player-sdk'
+import { PlayerSdk } from '@api.video/player-sdk'
 import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import useSWR from 'swr'
 import { fetcher } from '.'
-import {
-  Footer,
-  GlobalContainer,
-  Header,
-  InputsContainer,
-  PlayerSdkContainer,
-  Text,
-  TextsContainer,
-} from '../style/common'
 
 interface IVideoViewProps {
   children: React.ReactNode
   videoId: string
 }
 const VideoView: NextPage<IVideoViewProps> = ({ videoId }): JSX.Element => {
-  const [player, setPlayer] = useState<PlayerSdk | undefined>(undefined)
-  const [playerSettings, setPlayerSettings] = useState<PlayerTheme>({
-    link: 'rgb(235, 137, 82)',
-    linkHover: 'rgb(240, 95, 12)',
-  })
-  const [hideControls, setHideControls] = useState<boolean>(false)
   const { data, error } = useSWR<{ video: Video }>(`/api/${videoId}`, fetcher)
 
   useEffect(() => {
@@ -38,23 +22,10 @@ const VideoView: NextPage<IVideoViewProps> = ({ videoId }): JSX.Element => {
       link: 'rgb(235, 137, 82)',
       linkHover: 'rgb(240, 95, 12)',
     })
-    setPlayer(player)
   }, [videoId])
-  useEffect(() => {
-    player && player?.loadConfig({ id: videoId, hideControls: hideControls })
-  }, [hideControls, player, videoId])
-
-  const handleChangeSetting = (
-    e: ChangeEvent<HTMLInputElement>,
-    prop: string
-  ) => {
-    const newSettings = { ...playerSettings, [prop]: e.currentTarget.value }
-    setPlayerSettings(newSettings)
-    player?.setTheme(newSettings)
-  }
 
   return (
-    <GlobalContainer>
+    <div className="global-container">
       <Head>
         <title>Video view</title>
         <meta
@@ -63,12 +34,12 @@ const VideoView: NextPage<IVideoViewProps> = ({ videoId }): JSX.Element => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {data?.video && !error && <Header>{data.video.title}</Header>}
+      {data?.video && !error && <header>{data.video.title}</header>}
       <main>
-        <PlayerSdkContainer id="player" />
+        <div id="player" />
       </main>
 
-      <Footer>
+      <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
@@ -83,8 +54,8 @@ const VideoView: NextPage<IVideoViewProps> = ({ videoId }): JSX.Element => {
         <a href="https://api.video" target="_blank" rel="noopener noreferrer">
           api.video
         </a>
-      </Footer>
-    </GlobalContainer>
+      </footer>
+    </div>
   )
 }
 

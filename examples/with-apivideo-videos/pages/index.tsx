@@ -1,21 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
-import Card from '../components/Card'
-import { VideoUploader, VideoUploadResponse } from '@api.video/video-uploader'
-import Status from '../components/Status'
-import { useRouter } from 'next/router'
-import {
-  Button,
-  Footer,
-  GlobalContainer,
-  Header,
-  Text,
-  TextsContainer,
-  VideoCard,
-  VideosList,
-} from '../style/common'
+import React from 'react'
 import useSWR from 'swr'
 import VideosListResponse from '@api.video/nodejs-client/lib/model/VideosListResponse'
 
@@ -30,7 +16,7 @@ const Home: NextPage = () => {
   )
 
   return (
-    <GlobalContainer>
+    <div className="global-container">
       <Head>
         <title>Video Uploader</title>
         <meta
@@ -40,13 +26,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header>
+      <header>
         <span>api.video videos list</span> 📚
-      </Header>
+      </header>
 
       <main>
-        <TextsContainer>
-          <Text>
+        <div className="texts-container">
+          <p>
             Hey fellow dev! 👋 <br />
             Welcome to this basic example of videos list provided by{' '}
             <a
@@ -65,8 +51,8 @@ const Home: NextPage = () => {
               Vercel & Next.js
             </a>
             .
-          </Text>
-          <Text>
+          </p>
+          <p>
             api.video provides APIs and clients to handle all your video needs.
             <br />
             This app is built with the{' '}
@@ -78,8 +64,8 @@ const Home: NextPage = () => {
               api.video Node.js client
             </a>
             .
-          </Text>
-          <Text>
+          </p>
+          <p>
             You can{' '}
             <a
               href="https://github.com/vercel/next.js/tree/canary/examples/with-apivideo-videos"
@@ -89,19 +75,23 @@ const Home: NextPage = () => {
               check the source code on GitHub
             </a>
             .
-          </Text>
-          <Text>
+          </p>
+          <p>
             Please add your api.video API key in your <i>.env</i> file and let
             the power of the API do the rest 🎩
-          </Text>
-        </TextsContainer>
+          </p>
+        </div>
 
         {!data && !error && <div>Loading...</div>}
         {error && <div>An error occured trying to fetch your videos</div>}
         {data && data.videos?.data?.length > 0 && (
-          <VideosList>
+          <div className="videos-list">
             {data.videos.data.map((video) => (
-              <VideoCard href={`/${video.videoId}`} key={video.videoId}>
+              <a
+                className="video-card"
+                href={`/${video.videoId}`}
+                key={video.videoId}
+              >
                 <h3>{video.title}</h3>
                 <Image
                   src={video.assets?.thumbnail ?? '/vercel.svg'}
@@ -109,13 +99,13 @@ const Home: NextPage = () => {
                   width={150}
                   height={80}
                 />
-              </VideoCard>
+              </a>
             ))}
-          </VideosList>
+          </div>
         )}
       </main>
 
-      <Footer>
+      <footer>
         <a
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
           target="_blank"
@@ -130,8 +120,8 @@ const Home: NextPage = () => {
         <a href="https://api.video" target="_blank" rel="noopener noreferrer">
           api.video
         </a>
-      </Footer>
-    </GlobalContainer>
+      </footer>
+    </div>
   )
 }
 
