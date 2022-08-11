@@ -1,4 +1,3 @@
-import Video from '@api.video/nodejs-client/lib/model/Video'
 import { PlayerSdk } from '@api.video/player-sdk'
 import { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
@@ -12,7 +11,7 @@ interface IVideoViewProps {
   videoId: string
 }
 const VideoView: NextPage<IVideoViewProps> = ({ videoId }): JSX.Element => {
-  const { data, error } = useSWR<{ video: Video }>(`/api/${videoId}`, fetcher)
+  const { data, error } = useSWR(`/api/${videoId}`, fetcher)
 
   useEffect(() => {
     const player = new PlayerSdk('#player', {
